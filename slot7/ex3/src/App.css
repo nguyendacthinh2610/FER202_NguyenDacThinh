@@ -1,0 +1,13 @@
+/* Khung xám cho các ô grid (giống hình) */
+.box {
+  background: #cfcfcf;
+  border: 1px solid #bdbdbd;
+  min-height: 60px;
+  padding: 8px 10px;
+}
+
+/* Footer nền be/đất nhạt + chữ đậm lớn */
+.footer-abc {
+  background: #d8c5bd;
+  color: #2b2b2b;
+}

@@ -1,0 +1,44 @@
+:root{
+  --bg-dark:#2b2b2b;
+  --card-dark:#3a3a3a;
+  --accent:#ffc107; /* vàng cho SALE/NEW */
+}
+
+body{ background: var(--bg-dark); color:#f8f9fa; }
+
+.section-dark{ background: var(--bg-dark); }
+
+.navbar .form-control{ border-radius: 0.375rem 0 0 0.375rem; }
+.navbar .btn-search{ border-radius:0 0.375rem 0.375rem 0; }
+
+.hero-overlay{
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  text-align:center; color:#fff; background: rgba(0,0,0,0.25);
+}
+
+.badge-flag{
+  position:absolute; top:10px; left:10px;
+  background: var(--accent); color:#000; font-weight:700;
+  padding:4px 10px; border-radius:4px;
+}
+
+.card.menu-card{
+  background:#fff; color:#212529; border:none; border-radius:8px;
+  overflow:hidden; box-shadow:0 6px 16px rgba(0,0,0,.25);
+}
+
+.old-price{ text-decoration: line-through; color:#6c757d; margin-right:8px; }
+.new-price{ color:#fd7e14; font-weight:700; }
+
+.btn-buy{ background:#343a40; border:#343a40; }
+.btn-buy:hover{ background:#212529; }
+
+.section-title{
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight:700; margin: 24px 0 12px; color:#fff;
+}
+
+.form-card{
+  background: var(--card-dark); border-radius:10px; padding:24px;
+}

@@ -1,0 +1,9 @@
+.bg-orange {
+  background-color: #f28c28; /* màu cam */
+}
+.nav-link {
+  color: white !important;
+}
+.nav-link:hover {
+  text-decoration: underline;
+}

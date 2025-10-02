@@ -1,0 +1,40 @@
+/* Màu nền cam chủ đạo */
+:root { --orange: #e88a2b; --orange-dark: #d87b1f; }
+
+/* Thanh top và nền hero cam nhạt như ảnh */
+.topbar { background: #ead0b7; }       /* be nhạt */
+.hero { background: var(--orange); }   /* dải cam */
+.hero-img { border: 6px solid var(--orange-dark); display:block; }
+
+/* Card ảnh sinh viên */
+.student-photo { height: 260px; object-fit: cover; }
+
+/* Footer cam */
+.footer-orange { background: var(--orange); }
+.footer-copy { background: var(--orange-dark); }
+
+/* Breadcrumb nhẹ nhàng */
+.breadcrumb { margin-bottom: 0; }
+/* Ảnh trong card: luôn theo bề ngang card, giữ tỉ lệ, không tràn */
+.student-photo {
+  height: 100%;
+  aspect-ratio: 4 / 5;  /* hoặc 3/4 tùy ảnh của bạn */
+  object-fit: cover;
+  display: block;
+}
+.footer-logos img{
+  height: 22px;      /* cỡ icon, chỉnh 18–28px tùy ý */
+  width: auto;
+  display: block;
+  /* simple-icons là SVG đơn sắc -> mặc định đen, đúng như ảnh mẫu */
+  /* nếu thấy hơi nhạt có thể thêm: filter: contrast(1.2); */
+}
+.footer-logos a:hover img{
+  opacity: .85;
+}
+
+
+.footer-logos a:hover .footer-logo {
+  opacity: 0.9;
+}
+
