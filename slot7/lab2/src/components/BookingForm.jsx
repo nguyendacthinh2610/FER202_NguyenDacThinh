@@ -1,6 +1,10 @@
 export default function BookingForm(){
   return (
+    
     <div className="container my-4">
+      <div class="alert alert-primary" role="alert">
+  A simple primary alert—check it out!
+</div>
       <h3 className="text-center mb-3" style={{fontFamily:"Georgia,serif"}}>Book Your Table</h3>
       <div className="form-card">
         <div className="row g-3">
@@ -10,6 +14,7 @@ export default function BookingForm(){
           <div className="col-md-4">
             <input className="form-control" type="email" placeholder="Your Email *" />
           </div>
+          
           <div className="col-md-4">
             <select className="form-select">
               <option>Select a Service</option>
