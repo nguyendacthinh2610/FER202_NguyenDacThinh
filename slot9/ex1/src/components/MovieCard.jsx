@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Button, Badge, Modal, Toast } from 'react-bootstrap';
+import './MovieCard.css';
 
 export default function MovieCard({ movie }) {
   const [showModal, setShowModal] = useState(false);
@@ -37,31 +38,30 @@ export default function MovieCard({ movie }) {
 
   return (
     <>
-      <Card className="h-100 shadow-sm movie-card" style={{ transition: 'transform .15s' }}>
-        <div style={{ overflow: 'hidden', height: 250, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Card.Img
-            variant="top"
-            src={movie.poster}
-            alt={`${movie.title} poster`}
-            style={{ maxHeight: '100%', width: 'auto', objectFit: 'cover' }}
-          />
-        </div>
-        <Card.Body className="d-flex flex-column">
-          <div className="d-flex justify-content-between align-items-start mb-2">
-            <Card.Title style={{ fontSize: '1rem', margin: 0 }}>{movie.title}</Card.Title>
-            <small className="text-muted">{movie.year}</small>
+      <Card className="h-100 shadow-sm movie-card anime-card">
+        <div className="movie-poster">
+          <img src={movie.poster} alt={`${movie.title} poster`} className="poster-img" />
+          <div className="poster-overlay">
+            <div className="poster-title">{movie.title}</div>
+            <div className="poster-sub">{movie.year} • {movie.country}</div>
           </div>
-          <Card.Text style={{ flex: 1 }}>{truncate(movie.description)}</Card.Text>
+        </div>
+
+        <Card.Body className="d-flex flex-column">
+          <Card.Text className="movie-desc" style={{ flex: 1 }}>{truncate(movie.description, 140)}</Card.Text>
+
           <div className="mb-2">
-            <Badge bg="secondary" className="me-1">{movie.country}</Badge>
-            <Badge bg="info" className="me-1">{movie.duration} min</Badge>
+            <Badge bg="light" text="dark" className="me-1 country-badge">{movie.country}</Badge>
+            <Badge bg="light" text="dark" className="me-1 duration-badge">{movie.duration} min</Badge>
+            <Badge bg="light" text="dark" className="me-1 year-badge">{movie.year}</Badge>
             {(Array.isArray(movie.genre) ? movie.genre : [movie.genre || 'Unknown']).map((g, i) => (
-              <Badge bg="warning" text="dark" className="me-1" key={i}>{g}</Badge>
+              <Badge bg="light" text="dark" className="me-1 genre-badge genre-pill" key={i}>{g}</Badge>
             ))}
           </div>
+
           <div className="d-flex gap-2 mt-2">
-            <Button variant="primary" size="sm" onClick={handleAddFavourite}>Add to Favourites</Button>
-            <Button variant="outline-primary" size="sm" onClick={() => setShowModal(true)}>View Details</Button>
+            <Button className="fav-btn" size="sm" onClick={handleAddFavourite}>❤ Add</Button>
+            <Button variant="outline-primary" size="sm" onClick={() => setShowModal(true)}>Details</Button>
           </div>
         </Card.Body>
       </Card>
@@ -73,7 +73,7 @@ export default function MovieCard({ movie }) {
         <Modal.Body>
           <div className="d-flex flex-column flex-md-row gap-3">
             <div style={{ flex: '0 0 40%' }}>
-              <img src={movie.poster} alt={`${movie.title} poster`} className="img-fluid" />
+              <img src={movie.poster} alt={`${movie.title} poster`} className="img-fluid rounded" />
             </div>
             <div style={{ flex: 1 }}>
               <h6>Description</h6>
@@ -93,7 +93,7 @@ export default function MovieCard({ movie }) {
         </Modal.Footer>
       </Modal>
 
-      <Toast show={showToast} onClose={() => setShowToast(false)} bg="success" style={{ position: 'fixed', bottom: 20, right: 20 }}>
+      <Toast show={showToast} onClose={() => setShowToast(false)} bg="success" className="fav-toast">
         <Toast.Body className="text-white">Added to favourites!</Toast.Body>
       </Toast>
     </>
