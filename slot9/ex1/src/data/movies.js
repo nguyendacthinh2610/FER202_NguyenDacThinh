@@ -1,41 +1,97 @@
-
-const movies = [
+export const movies = [
   {
     id: 1,
-    title: 'Suzume',
-    description:
-      'Suzume (Suzume no Tojimari) is a moving fantasy-adventure anime film about a girl who helps close mysterious doors that cause disasters across Japan. Rich visuals, emotional storytelling, and a memorable soundtrack.',
+    title: 'Galactic Wars',
+    description: 'Epic space battles decide the fate of a fractured galaxy as rival factions clash for control.',
     poster: '/images/movie1.jpg',
-    genre: ['Animation', 'Fantasy', 'Drama'],
+    genre: 'Sci-Fi',
     year: 2022,
-    country: 'Japan',
-    duration: 122,
-    showtimes: ['10:30 AM', '2:00 PM', '7:30 PM']
+    country: 'USA',
+    duration: 132
   },
   {
     id: 2,
-    title: 'JJK Movie 0',
-    description:
-      'Jujutsu Kaisen 0 is a prequel movie to the popular Jujutsu Kaisen series, following Yuta Okkotsu as he learns about curses and jujutsu sorcery. Intense action, strong characters, and high-quality animation.',
+    title: 'Laugh Out Loud',
+    description: 'A feel-good comedy about friendship, failure, and second chances in a small town.',
     poster: '/images/movie2.jpg',
-    genre: ['Animation', 'Action', 'Supernatural'],
+    genre: 'Comedy',
     year: 2021,
-    country: 'Japan',
-    duration: 105,
-    showtimes: ['11:00 AM', '3:30 PM', '9:00 PM']
+    country: 'UK',
+    duration: 105
   },
   {
     id: 3,
-    title: 'Your Name',
-    description:
-      "Your Name (Kimi no Na wa) is an acclaimed romantic fantasy anime film about two teenagers who mysteriously swap bodies and form a fate-crossing connection. It's celebrated for its story, animation, and emotional impact.",
+    title: 'Deep Blue',
+    description: 'A gripping survival drama set far from shore when a voyage goes wrong.',
     poster: '/images/movie3.jpg',
-    genre: ['Animation', 'Romance', 'Drama'],
-    year: 2016,
+    genre: 'Drama',
+    year: 2019,
+    country: 'Australia',
+    duration: 118
+  },
+  {
+    id: 4,
+    title: 'Haunted House',
+    description: 'A teen dares to spend one night in a house with a dark past—and uncovers the truth.',
+    poster: '/images/movie4.jpg',
+    genre: 'Horror',
+    year: 2020,
+    country: 'Canada',
+    duration: 98
+  },
+  {
+    id: 5,
+    title: 'City of Love',
+    description: 'Two strangers meet in a sleepless city and rewrite their plans for life and love.',
+    poster: '/images/movie5.jpg',
+    genre: 'Romance',
+    year: 2018,
+    country: 'France',
+    duration: 110
+  },
+  {
+    id: 6,
+    title: 'The Time Traveler',
+    description: 'A brilliant scientist discovers a way to bend time—at a cost no one could foresee.',
+    poster: '/images/movie6.jpg',
+    genre: 'Sci-Fi',
+    year: 2023,
+    country: 'USA',
+    duration: 124
+  },
+  {
+    id: 7,
+    title: 'Street Runner',
+    description: 'An ex-courier is forced back into the fast lane for one last job across the neon city.',
+    poster: '/images/movie7.jpg',
+    genre: 'Action',
+    year: 2021,
     country: 'Japan',
-    duration: 106,
-    showtimes: ['12:00 PM', '4:00 PM', '8:00 PM']
+    duration: 102
+  },
+  {
+    id: 8,
+    title: 'Hidden Truth',
+    description: 'A reporter unravels a conspiracy that powerful people will do anything to keep buried.',
+    poster: '/images/movie8.jpg',
+    genre: 'Thriller',
+    year: 2022,
+    country: 'Germany',
+    duration: 115
+  },
+  {
+    id: 9,
+    title: 'Kingdom of Ash',
+    description: 'A fallen prince must unite rival clans to reclaim a cursed land and his destiny.',
+    poster: '/images/movie9.jpg',
+    genre: 'Comedy',
+    year: 2020,
+    country: 'New Zealand',
+    duration: 141
   }
 ];
 
-export default movies;
+export const allGenres = [
+  'All', 'Action', 'Animation', 'Comedy',  'Drama',
+  'Fantasy', 'Horror', 'Romance', 'Sci-Fi', 'Thriller'
+];

@@ -1,0 +1,53 @@
+/* Filter Card đẹp, cân đối, hiện đại */
+.filter-card {
+  width: 100%;
+  margin: 0 0 2rem 0;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+  border-radius: 16px;
+  background: #fff;
+  padding: 1.2rem 2rem;
+  border: none;
+}
+.filter-row {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1.2rem;
+  align-items: flex-end;
+  justify-content: stretch;
+}
+.filter-card .form-group {
+  flex: 1 1 0;
+  min-width: 0;
+}
+.filter-card .form-label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #222;
+}
+.filter-card .form-control,
+.filter-card .form-select {
+  border-radius: 8px;
+  font-size: 1rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #e0e0e0;
+  background: #fafbfc;
+}
+.filter-card .btn {
+  min-width: 120px;
+  height: 40px;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  margin-top: 0;
+  align-self: flex-end;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+@media (max-width: 900px) {
+  .filter-row {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .filter-card {
+    padding: 1rem 0.5rem;
+  }
+}

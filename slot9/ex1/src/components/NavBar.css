@@ -1,0 +1,17 @@
+.navbar-custom {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.navbar-custom .navbar-brand {
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+.navbar-custom .nav-link {
+  font-weight: 500;
+}
+.navbar-custom .dropdown-toggle {
+  display: flex;
+  align-items: center;
+}
+.navbar-custom .form-control {
+  min-width: 160px;
+}

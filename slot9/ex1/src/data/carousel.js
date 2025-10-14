@@ -1,35 +1,36 @@
+// src/data/carousel.js
 export const carouselMovies = [
   {
     id: 1,
-    title: 'Suzume',
+    title: 'Galactic Wars',
     description:
-      'Suzume (Suzume no Tojimari) — một anime điện ảnh kỳ ảo đầy cảm xúc, kể về cô gái đóng những cánh cửa bí ẩn gây tai họa khắp Nhật Bản. Hình ảnh đẹp và âm nhạc ấn tượng.',
+      'Epic space battles decide the fate of a fractured galaxy as rival factions clash for control.',
     poster: '/images/movie1.jpg',
-    genre: 'Animation',
+    genre: 'Sci-Fi',
     year: 2022,
-    country: 'Japan',
-    duration: 122
+    country: 'USA',
+    duration: 132
   },
   {
     id: 2,
-    title: 'JJK Movie 0',
+    title: 'Laugh Out Loud',
     description:
-      'Jujutsu Kaisen 0 — movie tiền truyện của series Jujutsu Kaisen, theo chân Yuta Okkotsu trong hành trình học hỏi về lời nguyền và thuật chú. Hành động mãn nhãn và nhân vật sâu sắc.',
+      'A feel-good comedy about friendship, failure, and second chances in a small town.',
     poster: '/images/movie2.jpg',
-    genre: 'Animation',
+    genre: 'Comedy',
     year: 2021,
-    country: 'Japan',
+    country: 'UK',
     duration: 105
   },
   {
     id: 3,
-    title: 'Your Name',
+    title: 'Deep Blue',
     description:
-      'Your Name (Kimi no Na wa) — bộ anime lãng mạn kỳ ảo về hai thiếu niên hoán đổi thân xác, một câu chuyện về định mệnh, ký ức và cảm xúc sâu lắng.',
+      'A gripping survival drama set far from shore when a voyage goes wrong.',
     poster: '/images/movie3.jpg',
-    genre: 'Animation',
-    year: 2016,
-    country: 'Japan',
-    duration: 106
+    genre: 'Drama',
+    year: 2019,
+    country: 'Australia',
+    duration: 118
   }
 ];

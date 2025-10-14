@@ -1,3 +1,28 @@
+/* Đảm bảo các card bằng nhau về chiều cao */
+.movie-card {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.movie-card .card-img-top {
+  height: 220px;
+  object-fit: cover;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+.movie-card .card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+.movie-card .mt-auto {
+  margin-top: auto !important;
+}
+
+/* các kiểu dáng và hiệu ứng khác cho card anime */
 .movie-card.anime-card {
   --accent1: #7c5cff; /* purple */
   --accent2: #ff6b88; /* pink */
