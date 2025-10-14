@@ -1,0 +1,21 @@
+.pw-modal .modal-content {
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.pw-modal .progress {
+  height: 8px;
+  border-radius: 999px;
+}
+
+/* Logo tròn xanh như hình */
+.pw-logo {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background: #0d6efd;
+  border-radius: 999px;
+}
