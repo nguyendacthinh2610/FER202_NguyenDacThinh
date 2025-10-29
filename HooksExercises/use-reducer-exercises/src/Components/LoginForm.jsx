@@ -105,7 +105,7 @@ function LoginForm({ onSubmit }) {
             <Card.Body>
               <Form onSubmit={handleSubmit}>
                 {/* Username */}
-                <Form.Group controlId="username" className="mb-3">
+                <Form.Group controlId="username" className="text-start mb-3">
                   <Form.Label>Username</Form.Label>
                   <Form.Control
                     type="text"
@@ -120,7 +120,7 @@ function LoginForm({ onSubmit }) {
                 </Form.Group>
 
                 {/* Password */}
-                <Form.Group controlId="password" className="mb-3">
+                <Form.Group controlId="password" className="text-start mb-3">
                   <Form.Label>Password</Form.Label>
                   <Form.Control
                     type="password"

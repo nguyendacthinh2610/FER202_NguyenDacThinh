@@ -8,10 +8,11 @@ const people = [
 
 // Cách 1: filter -> map -> forEach
 const teens = people
-  .filter(person => person.age >= 13 && person.age <= 19)
+  .filter(person => person.age >= 13 && person.age <= 19).sort((a, b) => a.age - b.age)
   .map(person => `${person.name} (${person.age})`);
 
 teens.forEach(str => console.log(str));
+console.log(`có ${teens.length} teens`);
 
 // Cách 2: in bằng for...of (không cần biến trung gian)
 for (const str of people

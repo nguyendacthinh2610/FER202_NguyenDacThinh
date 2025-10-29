@@ -10,6 +10,11 @@ export function Exercise4() {
         <h2>Exercise4</h2>
         <p>Destructuring array – lấy tuổi</p>
         <p>first: {first}, third: {third}, restAges: {restAges.join(", ")}</p>
+        <ul>
+          {restAges.map((age, index) => (
+            <li key={index}>{age}</li>  
+          ))}
+        </ul>
     </div>
   );
 }

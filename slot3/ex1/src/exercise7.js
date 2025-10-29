@@ -18,9 +18,10 @@ console.log("companies[0]:", companies[0]);     // giữ nguyên
 console.log("company0New:", company0New);       // bản sao đã thay đổi
 
 // Hàm concatAll sử dụng rest để nhận nhiều mảng
-function concatAll(...arrays) {
-  return [].concat(...arrays); // spread để gộp
-}
+
+// Không dùng function, dùng trực tiếp biểu thức gộp mảng
+const concatAllResult = [].concat([1, 2], [3], [4, 5]);
+
 
 // Test concatAll
 console.log(concatAll([1, 2], [3], [4, 5]));

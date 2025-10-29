@@ -1,215 +1,294 @@
-import { useReducer, useMemo } from "react";
-import { Form, Button, Card, Container, Row, Col, Toast, Modal } from "react-bootstrap";
+import React, { useReducer, useMemo } from 'react';
+import { Form, Button, Card, Container, Row, Col, Modal, Toast } from 'react-bootstrap';
+import ModalComponent from './ModalComponent';
+import ToastComponent from './ToastComponent';
+// Regex helpers
+const isEmail = (v) => /\S+@\S+\.[A-Za-z]{2,}/.test(v);
+const isUsername = (v) => /^[A-Za-z0-9._]{3,}$/.test(v.trim());
+const isStrongPassword = (v) =>
+  /[A-Z]/.test(v) &&        // có chữ hoa
+  /[a-z]/.test(v) &&        // có chữ thường
+  /\d/.test(v) &&           // có số
+  /[^A-Za-z0-9]/.test(v) && // có ký tự đặc biệt
+  v.length >= 8;            // độ dài
 
-const usernameRegex = /^[A-Za-z0-9._]{3,}$/; // >=3, chỉ chữ/số/._ 
-const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-
-const passwordRules = [
-  { key: "len",    test: (s) => s.length >= 8,       label: "≥ 8 ký tự" },
-  { key: "upper",  test: (s) => /[A-Z]/.test(s),     label: "Có chữ hoa" },
-  { key: "lower",  test: (s) => /[a-z]/.test(s),     label: "Có chữ thường" },
-  { key: "digit",  test: (s) => /\d/.test(s),        label: "Có chữ số" },
-  { key: "special",test: (s) => /[^A-Za-z0-9]/.test(s), label: "Có ký tự đặc biệt" },
-];
-
-// --- validate helpers --- 
-const validate = (f) => {
-  const e = {};
-  // username
-  if (f.username.trim() !== f.username) {
-    e.username = "Không có khoảng trắng đầu/cuối.";
-  } else if (!usernameRegex.test(f.username)) {
-    e.username = "Username ≥ 3 ký tự, chỉ chữ/số/._";
-  }
-  // email
-  if (!emailRegex.test(f.email)) e.email = "Email không hợp lệ.";
-  // password
-  const failed = passwordRules.filter((r) => !r.test(f.password));
-  if (failed.length) e.password = "Mật khẩu chưa đạt yêu cầu.";
-  // confirm
-  if (f.confirm !== f.password) e.confirm = "Confirm không khớp password.";
-  return e;
+// Action types
+const ACTION_TYPES = {
+  SET_FORM_FIELD: 'SET_FORM_FIELD',
+  SET_ERROR: 'SET_ERROR',
+  SET_ERRORS: 'SET_ERRORS',
+  SHOW_MODAL: 'SHOW_MODAL',
+  HIDE_MODAL: 'HIDE_MODAL',
+  SHOW_TOAST: 'SHOW_TOAST',
+  HIDE_TOAST: 'HIDE_TOAST',
+  RESET_FORM: 'RESET_FORM'
 };
 
-// --- reducer ---
+// Initial state
 const initialState = {
-  form: { username: "", email: "", password: "", confirm: "" },
+  form: {
+    username: '',
+    email: '',
+    password: '',
+    confirm: '',
+  },
   errors: {},
-  showToast: false,
   showModal: false,
+  showToast: false
 };
 
-function reducer(state, action) {
+// Reducer function
+const signUpReducer = (state, action) => {
   switch (action.type) {
-    case "CHANGE_FIELD": {
-      const nextForm = { ...state.form, [action.name]: action.value };
-      const nextErrors = validate(nextForm);
-      return { ...state, form: nextForm, errors: nextErrors };
-    }
-    case "SET_ERRORS":
-      return { ...state, errors: action.errors };
-    case "SUCCESS_SUBMIT":
-      return { ...state, showToast: true, showModal: true };
-    case "CANCEL":
-      return { ...initialState };
-    case "CLOSE_TOAST":
-      return { ...state, showToast: false };
-    case "CLOSE_MODAL":
-      return { ...state, showModal: false };
+    case ACTION_TYPES.SET_FORM_FIELD:
+      return {
+        ...state,
+        form: {
+          ...state.form,
+          [action.payload.name]: action.payload.value
+        }
+      };
+    case ACTION_TYPES.SET_ERROR:
+      return {
+        ...state,
+        errors: {
+          ...state.errors,
+          [action.payload.field]: action.payload.message
+        }
+      };
+    case ACTION_TYPES.SET_ERRORS:
+      return {
+        ...state,
+        errors: action.payload
+      };
+    case ACTION_TYPES.SHOW_MODAL:
+      return {
+        ...state,
+        showModal: true
+      };
+    case ACTION_TYPES.HIDE_MODAL:
+      return {
+        ...state,
+        showModal: false
+      };
+    case ACTION_TYPES.SHOW_TOAST:
+      return {
+        ...state,
+        showToast: true
+      };
+    case ACTION_TYPES.HIDE_TOAST:
+      return {
+        ...state,
+        showToast: false
+      };
+    case ACTION_TYPES.RESET_FORM:
+      return initialState;
     default:
       return state;
   }
-}
+};
 
-export default function SignUpForm() {
-  const [state, dispatch] = useReducer(reducer, initialState);
+function SignUpForm() {
+  // Sử dụng useReducer thay vì useState
+  const [state, dispatch] = useReducer(signUpReducer, initialState);
+  const { form, errors, showModal, showToast } = state;
 
-  const allValid = useMemo(() => {
-    const e = validate(state.form);
-    return Object.keys(e).length === 0;
-  }, [state.form]);
-
-  const onChange = (e) => {
-    const { name, value } = e.target;
-    dispatch({ type: "CHANGE_FIELD", name, value });
-  };
-
-  const onSubmit = (e) => {
-    e.preventDefault();
-    const eMap = validate(state.form);
-    dispatch({ type: "SET_ERRORS", errors: eMap });
-    if (Object.keys(eMap).length === 0) {
-      dispatch({ type: "SUCCESS_SUBMIT" });
+  // Validate từng trường
+  const validate = (field, value, currentForm = form) => {
+    switch (field) {
+      case 'username':
+        if (!value.trim()) return 'Username is required';
+        if (!isUsername(value)) return '≥ 3 chars, letters/numbers/._ only, no spaces';
+        return '';
+      case 'email':
+        if (!value.trim()) return 'Email is required';
+        if (!isEmail(value)) return 'Invalid email format';
+        return '';
+      case 'password':
+        if (!value) return 'Password is required';
+        if (!isStrongPassword(value)) return '≥8 chars, upper, lower, number, special';
+        return '';
+case 'confirm':
+        if (!value) return 'Please confirm password';
+        if (value !== currentForm.password) return 'Passwords do not match';
+        return '';
+      default:
+        return '';
     }
   };
 
-  const onCancel = () => dispatch({ type: "CANCEL" });
+  // Memo hóa lỗi cho toàn bộ form
+  const formErrors = useMemo(() => {
+    const e = {};
+    Object.keys(form).forEach((field) => {
+      const err = validate(field, form[field], form);
+      if (err) e[field] = err;
+    });
+    return e;
+  }, [form]);
 
-  const passChecks = passwordRules.map((r) => ({
-    key: r.key,
-    ok: r.test(state.form.password),
-    label: r.label,
-  }));
+  // Form hợp lệ khi không có lỗi
+  const isValid = Object.keys(formErrors).length === 0;
+
+  // Xử lý thay đổi input
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    
+    // Cập nhật form field
+    dispatch({
+      type: ACTION_TYPES.SET_FORM_FIELD,
+      payload: { name, value }
+    });
+    
+    // Cập nhật error cho field này
+    // Tạo form tạm thời với giá trị mới để validate
+    const tempForm = { ...form, [name]: value };
+    dispatch({
+      type: ACTION_TYPES.SET_ERROR,
+      payload: { field: name, message: validate(name, value, tempForm) }
+    });
+    
+    // Nếu đang thay đổi password và confirm đã có giá trị, validate lại confirm với password mới
+    if (name === 'password' && form.confirm) {
+      const confirmError = form.confirm !== value ? 'Passwords do not match' : '';
+      dispatch({
+        type: ACTION_TYPES.SET_ERROR,
+        payload: { field: 'confirm', message: confirmError }
+      });
+    }
+  };
+
+  // Xử lý submit
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Kiểm tra lại toàn bộ lỗi
+    const newErrors = {};
+    Object.keys(form).forEach((field) => {
+      const err = validate(field, form[field], form);
+      if (err) newErrors[field] = err;
+    });
+    
+    dispatch({
+      type: ACTION_TYPES.SET_ERRORS,
+      payload: newErrors
+    });
+    
+    if (Object.keys(newErrors).length === 0) {
+      dispatch({ type: ACTION_TYPES.SHOW_TOAST });
+      dispatch({ type: ACTION_TYPES.SHOW_MODAL });
+    }
+  };
+
+  // Xử lý reset form
+  const handleCancel = () => {
+    dispatch({ type: ACTION_TYPES.RESET_FORM });
+  };
 
   return (
     <Container className="mt-5">
       <Row className="justify-content-md-center">
         <Col md={7}>
-          <Card className="shadow-sm">
-            <Card.Header>
-              <h3 className="text-center m-0">Đăng ký tài khoản</h3>
+          <Card>
+<Card.Header>
+              <h3 className="text-center">Sign Up</h3>
             </Card.Header>
             <Card.Body>
-              <Form onSubmit={onSubmit} noValidate>
-                <Form.Group className="mb-3" controlId="username">
+              <Form onSubmit={handleSubmit}>
+                <Form.Group controlId="username" className="text-start mb-3">
                   <Form.Label>Username</Form.Label>
                   <Form.Control
+                    type="text"
                     name="username"
-                    value={state.form.username}
-                    onChange={onChange}
-                    isInvalid={!!state.errors.username}
-                    placeholder="vd: thinh.nd"
+                    value={form.username}
+                    onChange={handleChange}
+                    isInvalid={!!errors.username}
+                    placeholder="Enter username"
                   />
                   <Form.Control.Feedback type="invalid">
-                    {state.errors.username}
+                    {errors.username}
                   </Form.Control.Feedback>
                 </Form.Group>
-
-                <Form.Group className="mb-3" controlId="email">
+<Form.Group controlId="email" className="text-start mb-3">
                   <Form.Label>Email</Form.Label>
                   <Form.Control
+                    type="email"
                     name="email"
-                    value={state.form.email}
-                    onChange={onChange}
-                    isInvalid={!!state.errors.email}
-                    placeholder="vd: you@example.com"
+                    value={form.email}
+                    onChange={handleChange}
+                    isInvalid={!!errors.email}
+                    placeholder="Enter email"
                   />
                   <Form.Control.Feedback type="invalid">
-                    {state.errors.email}
+                    {errors.email}
                   </Form.Control.Feedback>
                 </Form.Group>
-
-                <Form.Group className="mb-3" controlId="password">
+                <Form.Group controlId="password" className="text-start mb-3">
                   <Form.Label>Password</Form.Label>
                   <Form.Control
                     type="password"
                     name="password"
-                    value={state.form.password}
-                    onChange={onChange}
-                    isInvalid={!!state.errors.password}
-                    placeholder="Mật khẩu mạnh"
+                    value={form.password}
+                    onChange={handleChange}
+                    isInvalid={!!errors.password}
+                    placeholder="Enter password"
                   />
                   <Form.Control.Feedback type="invalid">
-                    {state.errors.password}
+                    {errors.password}
                   </Form.Control.Feedback>
-
-                  <ul className="small mt-2 mb-0">
-                    {passChecks.map((c) => (
-                      <li key={c.key} className={c.ok ? "text-success" : "text-muted"}>
-                        {c.ok ? "✓ " : "• "}{c.label}
-                      </li>
-                    ))}
-                  </ul>
                 </Form.Group>
-
-                <Form.Group className="mb-4" controlId="confirm">
+                <Form.Group controlId="confirm" className="text-start mb-3">
                   <Form.Label>Confirm Password</Form.Label>
                   <Form.Control
                     type="password"
                     name="confirm"
-                    value={state.form.confirm}
-                    onChange={onChange}
-                    isInvalid={!!state.errors.confirm}
-                    placeholder="Nhập lại mật khẩu"
+                    value={form.confirm}
+                    onChange={handleChange}
+                    isInvalid={!!errors.confirm}
+                    placeholder="Confirm password"
                   />
                   <Form.Control.Feedback type="invalid">
-                    {state.errors.confirm}
+                    {errors.confirm}
                   </Form.Control.Feedback>
                 </Form.Group>
-
                 <div className="d-flex gap-2">
-                  <Button type="submit" variant="primary" disabled={!allValid} className="flex-grow-1">
+                  <Button variant="primary" type="submit" disabled={!isValid} className="w-100">
                     Submit
                   </Button>
-                  <Button type="button" variant="secondary" onClick={onCancel}>
+                  <Button variant="outline-secondary" type="button" onClick={handleCancel} className="w-100">
                     Cancel
                   </Button>
                 </div>
               </Form>
             </Card.Body>
           </Card>
-        </Col>
+</Col>
       </Row>
+      {/* Toast thông báo submit thành công */}
+      
+      {/* Gọi ToastComponent () */}
+        <ToastComponent
+          show={showToast}
+          message="Submitted successfully!"
+          handleClose={() => dispatch({ type: ACTION_TYPES.HIDE_TOAST })}
+        />
+      {/* Gọi ModalComponent */}
+      <ModalComponent
+        show={showModal}
+        handleClose={() => dispatch({ type: ACTION_TYPES.HIDE_MODAL })}
 
-      {/* Toast */}
-      <div className="position-fixed top-0 end-0 p-3" style={{ zIndex: 1080 }}>
-        <Toast
-          onClose={() => dispatch({ type: "CLOSE_TOAST" })}
-          show={state.showToast}
-          autohide
-          delay={2500}
-        >
-          <Toast.Header>
-            <strong className="me-auto">Thông báo</strong>
-            <small>now</small>
-          </Toast.Header>
-          <Toast.Body>Submitted successfully!</Toast.Body>
-        </Toast>
-      </div>
-
-      {/* Modal kết quả */}
-      <Modal show={state.showModal} onHide={() => dispatch({ type: "CLOSE_MODAL" })} centered>
-        <Card className="m-0">
-          <Card.Header className="fw-bold">Đăng ký thành công</Card.Header>
-          <Card.Body>
-            <p><strong>Username:</strong> {state.form.username}</p>
-            <p><strong>Email:</strong> {state.form.email}</p>
-            <p className="text-muted small mb-0">
-              (Mật khẩu không được hiển thị vì lý do bảo mật)
-            </p>
-          </Card.Body>
-        </Card>
-      </Modal>
-    </Container>
+        title="Sign Up Info"
+        body={
+          <Card>
+            <Card.Body>
+              <p><strong>Username:</strong> {form.username}</p>
+              <p><strong>Email:</strong> {form.email}</p>
+              <p><strong>Password:</strong> {form.password}</p>
+            </Card.Body>
+          </Card>
+        }
+      />
+</Container>
   );
 }
+
+export default SignUpForm;
