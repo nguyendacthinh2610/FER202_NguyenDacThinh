@@ -18,6 +18,9 @@ export const initialMovieState = {
   
     showDeleteModal: false,
     movieToDelete: null,
+
+    currentDetailMovie: null,
+    showDetailModal: false,
   };
   
   export const movieReducer = (state, action) => {
@@ -76,6 +79,20 @@ export const initialMovieState = {
           currentMovie: initialMovieState.currentMovie,
           isEditing: null,
           showEditModal: false,
+        };
+
+      case 'OPEN_DETAIL_MODAL':
+        return {
+          ...state,
+          currentDetailMovie: action.payload,
+          showDetailModal: true,
+        };
+
+      case 'CLOSE_DETAIL_MODAL':
+        return {
+          ...state,
+          currentDetailMovie: null,
+          showDetailModal: false,
         };
   
       default:

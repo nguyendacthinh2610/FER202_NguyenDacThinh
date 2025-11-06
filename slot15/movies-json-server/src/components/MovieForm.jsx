@@ -260,6 +260,7 @@ const MovieForm = () => {
     if (!validateForm()) {
       return;
     }
+
     
     // Chuẩn hóa dữ liệu trước khi gửi đi
     const dataToSend = {

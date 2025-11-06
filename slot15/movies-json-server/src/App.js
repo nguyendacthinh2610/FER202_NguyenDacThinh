@@ -1,18 +1,38 @@
 import './App.css';
-import MovieManager from './pages/MovieManager';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import MovieManager from './pages/MovieManager';
+import Login from './pages/Login';
+import Header from './components/Header';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+
+const RequireAuth = ({ children }) => {
+  const { isAuthenticated } = useAuth();
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+  return children;
+};
 
 function App() {
   return (
-    <div className="App">
-      {/* Trong ứng dụng lớn hơn, đây sẽ là nơi bạn đặt Router (ví dụ: React Router DOM)
-        và các thành phần Layout chung (Header, Footer, Sidebar). 
-      */}
-      <MovieManager />
-{/* Nếu bạn có nhiều trang (ví dụ: /home, /about, /movies), 
-        bạn sẽ sử dụng Router ở đây để hiển thị MovieManager khi cần. 
-      */}
-    </div>
+    <AuthProvider>
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route
+            path="/movies"
+            element={
+              <RequireAuth>
+                <MovieManager />
+              </RequireAuth>
+            }
+          />
+          <Route path="*" element={<Navigate to="/movies" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 

@@ -25,7 +25,10 @@ import React, {
       dispatch({ type: 'START_LOADING' });
       try {
         const response = await movieApi.get('/movies');
-        dispatch({ type: 'SET_MOVIES', payload: response.data });
+        const data = Array.isArray(response.data) ? response.data : [];
+        // Normalize to ensure avatar is available (fallback to poster)
+        const normalized = data.map((m) => ({ ...m, avatar: m.avatar || m.poster }));
+        dispatch({ type: 'SET_MOVIES', payload: normalized });
       } catch (err) {
         console.error('Lỗi khi tải danh sách phim:', err);
         dispatch({ type: 'SET_MOVIES', payload: [] });
@@ -66,12 +69,24 @@ import React, {
         dispatch({ type: 'START_LOADING' });
   
         try {
+          const payload = { ...dataToSend, poster: dataToSend.avatar || dataToSend.poster };
+          // Nếu tạo mới: tự tính ID tiếp theo dựa trên danh sách hiện có để đảm bảo đúng thứ tự
+          if (!isEditing) {
+            const ids = (state.movies || [])
+              .map((m) => m?.id)
+              .filter((id) => id !== undefined && id !== null)
+              .map((id) => (typeof id === 'number' ? id : parseInt(id, 10)))
+              .filter((n) => !Number.isNaN(n));
+            const nextId = (ids.length ? Math.max(...ids) : 0) + 1;
+            const sampleId = state.movies && state.movies[0] ? state.movies[0].id : null;
+            payload.id = typeof sampleId === 'string' ? String(nextId) : nextId;
+          }
           if (isEditing) {
             // PUT: sửa toàn bộ record
-            await movieApi.put(`/movies/${isEditingId}`, dataToSend);
+            await movieApi.put(`/movies/${isEditingId}`, payload);
           } else {
             // POST: thêm mới
-            await movieApi.post('/movies', dataToSend);
+            await movieApi.post('/movies', payload);
           }
   
           dispatch({ type: 'RESET_FORM' });
@@ -83,8 +98,9 @@ import React, {
           return false;
         }
       },
-      [fetchMovies]
+      [fetchMovies, state.movies]
     );
+    
   
     // load initial data khi app mount
     useEffect(() => {
