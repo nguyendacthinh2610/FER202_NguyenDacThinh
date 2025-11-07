@@ -57,6 +57,11 @@ const DashboardPage = () => {
     const handleAddPayment = () => {
         navigate('/payments/add');
     };
+
+    // Tính tổng tiền
+    const calculateTotal = () => {
+        return filteredPayments.reduce((total, payment) => total + payment.amount, 0);
+    };
       
     return (
         <>
@@ -149,6 +154,15 @@ const DashboardPage = () => {
                                         </tr>
                                     ))}
                                 </tbody>
+                                <tfoot style={{ backgroundColor: '#f8f9fa', fontWeight: 'bold' }}>
+                                    <tr>
+                                        <td colSpan="3" className="text-end">Total:</td>
+                                        <td className="text-end text-primary fw-bold" style={{ fontSize: '1.1rem' }}>
+                                            {formatCurrency(calculateTotal())}
+                                        </td>
+                                        <td colSpan="2"></td>
+                                    </tr>
+                                </tfoot>
                             </Table>
                         )}
                     </Card.Body>

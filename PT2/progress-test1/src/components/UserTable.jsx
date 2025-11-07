@@ -3,7 +3,7 @@ import React from 'react';
 import { Table, Button, Badge, Image } from 'react-bootstrap';
 import { FaEye, FaBan } from 'react-icons/fa';
 
-const UserTable = ({ users, onViewDetails, onBanAccount }) => {
+const UserTable = ({ users, onViewDetails, onBanAccount, currentUserId }) => {
     const getRoleBadge = (role) => {
         return role === 'admin' ? (
             <Badge bg="danger">Admin</Badge>
@@ -77,7 +77,12 @@ const UserTable = ({ users, onViewDetails, onBanAccount }) => {
                                         variant={user.status === 'blocked' ? 'success' : 'danger'}
                                         size="sm"
                                         onClick={() => onBanAccount(user)}
-                                        title={user.status === 'blocked' ? 'Unblock Account' : 'Block Account'}
+                                        disabled={user.id === currentUserId}
+                                        title={
+                                            user.id === currentUserId 
+                                                ? 'You cannot ban yourself' 
+                                                : (user.status === 'blocked' ? 'Unblock Account' : 'Block Account')
+                                        }
                                     >
                                         <FaBan /> {user.status === 'blocked' ? 'Unblock' : 'Ban'}
                                     </Button>

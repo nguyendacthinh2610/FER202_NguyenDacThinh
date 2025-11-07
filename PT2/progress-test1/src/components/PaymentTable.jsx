@@ -52,6 +52,11 @@ const PaymentTable = () => {
         }).format(amount);
     };
 
+    // Tính tổng tiền
+    const calculateTotal = () => {
+        return payments.reduce((total, payment) => total + payment.amount, 0);
+    };
+
     if (isLoading) {
         return <div style={{ textAlign: 'center', padding: '40px' }}>Loading payments...</div>;
     }
@@ -117,6 +122,15 @@ const PaymentTable = () => {
                             </tr>
                         ))}
                     </tbody>
+                    <tfoot>
+                        <tr style={{ backgroundColor: '#f8f9fa', fontWeight: 'bold', borderTop: '2px solid #007bff' }}>
+                            <td colSpan="3" style={{ padding: '12px', textAlign: 'right' }}>Total:</td>
+                            <td style={{ padding: '12px', color: '#007bff', fontSize: '1.1rem' }}>
+                                {formatCurrency(calculateTotal())}
+                            </td>
+                            <td colSpan="2"></td>
+                        </tr>
+                    </tfoot>
                 </table>
             )}
 

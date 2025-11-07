@@ -6,8 +6,10 @@ import UserFilter from '../components/UserFilter';
 import UserTable from '../components/UserTable';
 import { getUsers } from '../services/api';
 import { updateUser } from '../services/api';
+import { useAuth } from '../contexts/AuthContext';
 
 const UserListPage = () => {
+    const { user: currentUser } = useAuth();
     const [users, setUsers] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -101,6 +103,11 @@ const UserListPage = () => {
     };
 
     const handleBanAccount = (user) => {
+        // Không cho phép admin ban chính mình
+        if (currentUser && user.id === currentUser.id) {
+            setError('You cannot ban your own account!');
+            return;
+        }
         setUserToBan(user);
         setShowBanModal(true);
     };
@@ -158,6 +165,7 @@ const UserListPage = () => {
                             users={filteredUsers}
                             onViewDetails={handleViewDetails}
                             onBanAccount={handleBanAccount}
+                            currentUserId={currentUser?.id}
                         />
                     </>
                 )}
